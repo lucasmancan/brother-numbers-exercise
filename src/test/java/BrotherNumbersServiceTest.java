@@ -1,4 +1,5 @@
 import br.com.lucasmancan.BrotherNumbersService;
+import br.com.lucasmancan.exceptions.InvalidValueException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -6,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class BrotherNumbersServiceTest {
-
 
     private BrotherNumbersService brotherNumbersService;
 
@@ -16,24 +16,23 @@ public class BrotherNumbersServiceTest {
     }
 
     @Test
-    public void shouldGetMaxNumberCorrectly(){
-
+    public void shouldGetMaxNumberCorrectly() throws InvalidValueException {
         int firstResult = brotherNumbersService.getBiggestBrother(213);
         int secondResult = brotherNumbersService.getBiggestBrother(553);
 
-
         assertEquals(firstResult, 321);
         assertEquals(secondResult, 553);
-
     }
 
     @Test
-    @Ignore
-    public void shouldNotGetBiggestBrotherNumberIfBiggerThan100000000(){
-
-        int firstResult = brotherNumbersService.getBiggestBrother(123456789);
-
+    public void shouldNotGetBiggestBrotherNumberIfBiggerThan9Digits() throws InvalidValueException {
+        int firstResult = brotherNumbersService.getBiggestBrother(1231231231);
         assertEquals(firstResult, -1);
+    }
+
+    @Test(expected = InvalidValueException.class)
+    public void shouldNotWorkWithNegativeNumber() throws InvalidValueException {
+       brotherNumbersService.getBiggestBrother(-5);
     }
 
 }

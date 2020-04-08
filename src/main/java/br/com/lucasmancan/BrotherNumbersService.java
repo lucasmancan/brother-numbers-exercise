@@ -1,8 +1,8 @@
 package br.com.lucasmancan;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import br.com.lucasmancan.exceptions.InvalidValueException;
+
+import java.util.*;
 
 public class BrotherNumbersService {
 
@@ -15,10 +15,9 @@ public class BrotherNumbersService {
 
 
     /*
-    * TODO Melhorar lógica para reduzir iterações e eliminar necessidade do Set
-    *
-    * */
-
+     * TODO Melhorar lógica para reduzir iterações e eliminar necessidade do Set
+     *
+     * */
     private Set<Integer> getBrotherNumbersPossibilities(char[] values, int index) {
 
         Set<Integer> set = new HashSet<Integer>();
@@ -42,14 +41,27 @@ public class BrotherNumbersService {
         return set;
     }
 
-    public int getBiggestBrother(int n){
 
-        int max = Collections.max(getBrotherNumbers(n));
+    /**
+     * @param n número natural
+     * @return
+     */
+    public int getBiggestBrother(int n) throws InvalidValueException {
 
-        if(max > 100000000)
+        if (n < 0) {
+            throw new InvalidValueException("Invalid value.");
+        }
+
+        String[] elements = String.valueOf(n).split("");
+
+        if(elements.length >= 9)
             return -1;
 
-        return max;
+        Optional<String> stringValue = Arrays.stream(elements)
+                .sorted(Comparator.reverseOrder())
+                .reduce(String::concat);
+
+        return stringValue.isPresent() ? Integer.parseInt(stringValue.get()) : null;
     }
 
 
