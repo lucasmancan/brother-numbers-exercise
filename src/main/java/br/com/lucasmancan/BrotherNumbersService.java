@@ -43,10 +43,11 @@ public class BrotherNumbersService {
 
 
     /**
+     * Utilizando recursos do Java 8
      * @param n número natural
-     * @return
+     * @return maior número irmão de n
      */
-    public int getBiggestBrother(int n) throws InvalidValueException {
+    public int getBiggestBrotherUsingStreamApi(int n) throws InvalidValueException {
 
         if (n < 0) {
             throw new InvalidValueException("Invalid value.");
@@ -62,6 +63,38 @@ public class BrotherNumbersService {
                 .reduce(String::concat);
 
         return stringValue.isPresent() ? Integer.parseInt(stringValue.get()) : null;
+    }
+
+    /**
+     * @param n número natural
+     * @return maior número irmão de n
+     */
+    public int getBiggestBrother(int n) throws InvalidValueException {
+
+        if (n < 0) {
+            throw new InvalidValueException("Invalid value.");
+        }
+
+        char[] elements = String.valueOf(n).toCharArray();
+
+        if(elements.length >= 9)
+            return -1;
+
+        this.sort(elements);
+
+        return Integer.parseInt(String.valueOf(elements));
+    }
+
+    private void sort(char[] elements) {
+        for (int i = 0; i < elements.length; i++) {
+            for (int j = i + 1; j < elements.length; j++) {
+                if(elements[i] < elements[j]){
+                    char aux = elements[i];
+                    elements[i] = elements[j];
+                    elements[j] = aux;
+                }
+            }
+        }
     }
 
 
